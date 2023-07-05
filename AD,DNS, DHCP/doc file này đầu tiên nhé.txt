@@ -1,0 +1,5 @@
+Còn 1 số lưu ý liên quan đến địa chỉ mạng và DHCP của vmware, ở đây địa chỉ mạng của mk là 192.168.4.0, các bạn cần lưu ý để biết đường
+
+cấp dhcp cho đúng dải địa chỉ nhé.
+
+Chú ý với câu lệnh ip route, lấy router của ens.. để thêm vào file dhcpd.conf, vd của mk là 192.168.4.2

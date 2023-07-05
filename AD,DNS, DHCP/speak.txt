@@ -1,0 +1,64 @@
+Xin chào mọi người, hôm nay mình sẽ hướng dẫn các bạn cài đặt và cấu hình AD, DHCP, DNS và IIS
+
+Về bước chuẩn bị, các bạn cần chuẩn bị 2 máy ảo ubuntu server (mk dùng bản 20.04) và máy windows 7(pro or ulitimate), cùng
+với đó là phần mềm Putty để thực hiện ssh nhé
+
+Thực hiện ping đảm bảo thông giữa các máy, bật dịch vụ ssh trên ubuntu server
+
+Lời khuyên cho các bạn nên cài 2 hđh trắng (tức là mới đc boot từ file iso vì mk sẽ làm từ đầu)
+
+Dịch vụ ssh có trong gói cài đặt nếu k thể khởi động ssh bằng câu lệnh systemctl start ssh thì các bạn cài bằng cú pháp
+
+apt install openssh-server -y nhé
+
+ở phần này các bạn có thể cài đặt GUI cho ubuntu bằng lệnh tasksel để phục vụ cho dịch vụ IIS, quá trình cài đặt khá lâu nên mk sẽ 
+sử dụng trình duyệt w3m của CLI để truy cập web nhé, dùng lệnh w3m + website để truy cập và dùng shift Q để thoát nhé
+
+
+Tiếp theo chúng ta cần update và upgrade để cập nhật và nâng cấp các gói còn thiếu
+
+Chúng ta sẽ bắt đầu với dịch vụ AD nhé
+
+hn.ptitdao.vn => hn là hostname, tên máy; ptitdao.vn là tên miền. Các bạn có thể lấy tuỳ ý thích nhé nhưng đảm bảo n trùng cấu hình vs file
+hostname 
+
+Phần mk in đậm là các bạn cứ ấn enter thôi sau đó dòng kia điền 8.8.8.8 sau đó nhập mật khẩu (ko trùng mật khẩu máy ubuntu nhé)
+
+Bây h chúng ta join máy win 7 vào nhé, đợi nó restart rồi xem kq nhé
+
+Ok bây giờ chúng ta sẽ chuyển qua dịch vụ DNS nhé
+
+Việc cài đặt dịch vụ DNS coi như thành công, mk sẽ cấu hình phân giải google sau, chúng ta làm dịch vụ IIS và DHCP trước nhé
+
+Thành công dịch vụ IIS r nhé, tiếp theo sẽ là dịch vụ dhcp
+
+
+Nó sẽ chưa cấp luôn được, các bạn đổi mạng theo mk nhé, đây có lẽ là vấn đề thuộc về mạng NAT, mk sẽ đổi sang mạng VMnet2 sau đó sẽ chuyển
+về vmnet8 (NAT) sau
+
+Nó bị mất địa chỉ IP đừng lo, đây chỉ là tạm  thời để cta đổi mạng để n có thể cấp nhanh hơn
+
+Xong dịch vụ DHCP r nhé, về dịch vụ DHCP này, đối với VMware thì mk thấy khi tắt đi bật lại n sẽ không đúng như chúng ta mong đợi nên các bạn
+
+cứ đổi mạng giống mk là đc nhé. Nguyên tắc là mở máy server trước rồi mới mở máy client nhé
+
+
+Ok tiếp theo chúng ta sẽ đi đến dịch vụ cuối cùng là dịch vụ DNS
+
+Như vậy là xong rồi nhé, lý thuyết về DNS phân giải tên miền thành IP và ngược lại nên chúng ta làm như vậy là được rồi
+
+Còn 1 số lưu ý liên quan đến địa chỉ mạng và DHCP của vmware, ở đây địa chỉ mạng của mk là 192.168.4.0, các bạn cần lưu ý để biết đường
+
+cấp dhcp cho đúng dải địa chỉ nhé. Như các bạn thấy dhcp của vmware chỉ cấp cho các máy ảo dải từ 128->254, nên việc máy client đã nhận
+
+được IP DHCP từ ubuntu server càng được củng cố
+
+
+Như vậy mk đã hướng dẫn xong cho các bạn cách cài đặt và cấu hình 4 dịch vụ nêu ở đầu bài
+
+Chúc các bạn may mắn!
+
+
+
+
+

@@ -1,0 +1,27 @@
+install apache2
+tạo thư mục /var/www/ptitdao.vn, tạo file index.html trong này
+phân quyền cho thư mục /var/www/ptitdao.vn
+sudo chown -R www-data: /var/www/ptitdao.vn
+nano /etc/apache2/sites-available/ptitdao.vn.conf
+<VirtualHost *:80>
+	ServerName ptitdao.vn
+	ServerAlias www.ptitdao.vn
+	DocumentRoot /var/www/ptitdao.vn
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo a2ensite ptitdao.vn
+
+sudo apachectl configtest
+
+sudo systemctl restart apache2
+
+Cấu hình apache
+nano /etc/hosts, bạn thêm địa chỉ và trang web của mk vào đây
+
+
+
+
+Link : https://www.youtube.com/watch?v=oIvnCLhiNiw
+       https://freetuts.net/cai-dat-apache-tren-ubuntu-20-04-3604.html

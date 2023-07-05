@@ -1,0 +1,66 @@
+Trước khi cài đặt hãy đảm bảo bạn đã cập nhật các gói mới nhất
+sudo apt update -y
+
+Thay đổi hostname
+sudo nano /etc/hostname
+---
+hn.ptitdao.vn
+---
+sudo nano /etc/hosts
+---
+192.168.4.152 hn.ptitdao.vn hn
+---
+sudo reboot
+
+Bây giờ chúng ta sẽ cài gói AD Samba 4 
+sudo apt -y install samba krb5-config winbind smbclient
+---
+Kerberos Realm: ptitdao.vn
+Kerberos servers for your realm: hn.ptitdao.vn
+Administrative server for your Kerberos realm: hn.ptitdao.vn
+
+Đổi tên file cấu hình samba
+sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.original
+Cung cấp bộ điều khiển miền
+sudo samba-tool domain provision
+---
+Realm [ptitdao.vn]:
+Domain [MVCLOUD]:
+Server Role (dc, member, standalone) [dc]:
+DNS backend (SAMBA_INTERNAL, BIND9_FLATFILE, BIND9_DLZ, NONE) [SAMBA_INTERNAL]:
+DNS forwarder IP address (write 'none' to disable forwarding)  8.8.8.8
+Administrator password:
+Retype password:
+
+Copy file cấu hình kerberos
+sudo cp /var/lib/samba/private/krb5.conf /etc/
+
+
+Dừng và tắt các dịch vụ samba và dịch vụ trình phân giải dns
+sudo systemctl disable --now smbd nmbd winbind systemd-resolved
+
+Unmask the SAMBA AD service
+sudo systemctl unmask samba-ad-dc
+
+Bật và bắt đầu dịch vụ AD
+sudo systemctl enable --now samba-ad-dc
+
+Xem level của AD
+sudo samba-tool domain level show
+---
+Domain and forest function level for domain 'DC=ptitdao,DC=vn'
+
+Forest function level: (Windows) 2008 R2
+Domain function level: (Windows) 2008 R2
+Lowest function level of a DC: (Windows) 2008 R2
+Recreate the dns nameserver file
+
+sudo rm -f /etc/resolv.conf
+
+sudo nano /etc/resolv.conf
+---
+nameserver 127.0.0.1
+domain ptitdao.vn
+
+
+Link : https://www.youtube.com/watch?v=PMjp_VvfYJ0
